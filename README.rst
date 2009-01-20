@@ -21,7 +21,7 @@ In order to add attach a file to a !MoinMoin page, you need to:
         file selection dialogue.
     iii. Submit the form
 
-Rinse wash and repeat *for all of the files you wan to upload* to the page. Often
+Rinse wash and repeat *for all of the files you want to upload* to the page. Often
 times I've found myself wanting to upload a chunk of files all at the same time
 and this process gets frustrating rather quickly. This is what gave birth to
 `mule`.
@@ -38,6 +38,8 @@ The above command will select all of the files inside the
 match the regular expression defined in ``filter`` and send them to the
 ``MyWikiPage`` on your "preferred server."
 
+-----
+
 .. NOTE::
 
   MoinMoin has a "surge protection" feature which prevents users from hitting
@@ -50,6 +52,8 @@ match the regular expression defined in ``filter`` and send them to the
 
   You can find out more about surge protection on MoinMoin's SurgeProtection_
   information page.
+
+-----
 
 That's the basic idea ... easy, right!? You might be wondering how `mule`
 knows what server you are trying to send your files to, and what username
@@ -125,6 +129,8 @@ This is an example of ``mule`` config file with two different settings::
   password=GetYourOwn
   domain=mysecondwiki.com
 
+-----
+
 .. CAUTION::
 
   You'll realize that the passwords are stored in plain text, which really
@@ -136,6 +142,7 @@ This is an example of ``mule`` config file with two different settings::
   configuration as it is, and enter the password via
   the command line.
 
+-----
 
 Using the Command Line
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -156,6 +163,7 @@ of the server and login information manually each time.
   $ mule --site=scipy wiki/page file1.png file2.png file3.png
   
 
+-----
 
 .. NOTE::
 
@@ -165,6 +173,8 @@ of the server and login information manually each time.
   
   If you just have one site listed, you don't have to pass in the ``--site`` flag, 
   as it will automatically pick it.
+
+-----
 
 
 Usage Examples
@@ -202,8 +212,11 @@ To Do
 =====
 
  - Deal with attachments already existing on the target web page
- - Encrypt the passwords stored in the `~/.mule` config file
+ - Encrypt the passwords stored in the ``~/.mule`` config file
  - Deal with sending files to a page that doesn't exist
+ - Figure out how to deal with ``NOTE`` and ``CAUTION`` admonitions CSS for github.
+ - Restructure this directory
+
 
 
 .. _SurgeProtection: http://moinmo.in/HelpOnConfiguration/SurgeProtection
