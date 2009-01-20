@@ -1,4 +1,4 @@
-MoinUpLoader (``mule``) is a utility that makes it easy
+MoinUpLoadEr (``mule``) is a utility that makes it easy
 to attach files to wiki pages in a non-annoying way. ``mule`` provides a simple
 command line interface to send a file, or batches of files (all files in a
 given directory, for example), to a specified wiki page.
