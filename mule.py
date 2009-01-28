@@ -214,9 +214,14 @@ def _build_parser():
                       help="Pick a particular site ([section]) from the config "\
                            "file to use the settings for",
                       default=None)
-    parser.add_option("-v", action="store_true", dest="verbose", default=False)
-    parser.add_option("-q", action="store_false", dest="verbose")
-    parser.add_option('-t', action="store_true", dest='testing', default=False)
+    parser.add_option("-v", '--verbose', action="store_true", dest="verbose",
+                      default=False, help="Crank up the verbosity")
+    parser.add_option("-q", '--quiet', action="store_false", dest="verbose",
+                      help="Makes mule quiet (default)")
+    parser.add_option('-t', '--test', action="store_true", dest='testing', 
+                      default=False,
+                      help="Sets testing flag to true. This lists the files " \
+                           "that will be sent without actually sendint them.")
     return parser
 
 def _setup():
