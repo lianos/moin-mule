@@ -1,5 +1,5 @@
 MoinUpLoadEr (``mule``) is a utility that makes it easy
-to attach files to wiki pages in a non-annoying way. ``mule`` provides a simple
+to attach files to MoinMoin_ wiki pages in a non-annoying way. ``mule`` provides a simple
 command line interface to send a file, or batches of files (all files in a
 given directory, for example), to a specified wiki page.
 
@@ -218,7 +218,7 @@ To Do
  - Restructure this directory
 
 
-
+.. _MoinMoin: http://moinmo.in
 .. _SurgeProtection: http://moinmo.in/HelpOnConfiguration/SurgeProtection
 .. _mechanize: http://wwwsearch.sourceforge.net/mechanize
 .. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
