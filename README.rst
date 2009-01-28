@@ -10,7 +10,7 @@ web form and sending them one by one (you know it's a pain!).
 Introduction
 ============
 
-In order to add attach a file to a !MoinMoin page, you need to:
+In order to attach a file to a MoinMoin_ page, you need to:
 
   1. Have the file on your local computer
   2. Browse to the ``Attachments`` page for the current page you are working on.
@@ -113,9 +113,8 @@ config file allows you to specify as many different MoinMoin servers you like
 to make it easy to use ``mule`` with different wikis.
 
 If you have more than one server configuration in your ``mule`` config file,
-you will have to specify which site/server ``mule`` should use the configuration
-information for using the `-s` (or `--site` switch). Unfortunately, it doesn't, 
-by default, pick the first set of connection information from your config file.
+the configuration information for the first site will be chosen, unless you
+specify an other site via the command line switches ``-s`` or ``--site``.
 
 This is an example of ``mule`` config file with two different settings::
 
@@ -124,10 +123,10 @@ This is an example of ``mule`` config file with two different settings::
   password=GetYourOwnPassword
   domain=myfirstwiki.com
 
-  [wiki2]
+  [scipy]
   username=SteveLianoglou
   password=GetYourOwn
-  domain=mysecondwiki.com
+  domain=scipy.org
 
 -----
 

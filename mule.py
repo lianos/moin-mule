@@ -28,12 +28,61 @@ This code is released under the `Creative Commons Attribution 3.0 License`_ .
 """
 
 from __future__ import division
+from ConfigParser import ConfigParser, NoOptionError
 
 import os, urllib2, re
 import mechanize as mc
 
 __author__ = 'Steve Lianoglou'
 __docformat__ = 'restructuredtext en'
+
+class MuleConfigParser:
+    
+    def __init__(self, path, section=None):
+        if not os.path.isfile(path):
+            raise IOError("Can't open config file: %s" % path)
+        self.path = path
+        self.parser = ConfigParser()
+        self.parser.read(path)
+        
+        self.validate()
+        if section is None:
+            self.section = self.get_default_section()
+        else:
+            if section not in self.parser.sections():
+                raise AttributeError("Specified section [%s] not defined in " \
+                                     "config file" % section)
+            self.section = section
+    
+    def validate(selfv):
+        # TODO: Implement file validation
+        pass
+    
+    def sections(self):
+        return self.parser.sections()
+    
+    def get_default_section(self):
+        """Finds the first section defined in the config file"""
+        fh = open(self.path)
+        default = None
+        for line in fh:
+            line = line.strip()
+            if line.startswith('['):
+                default = line[1:-1]
+                break
+        fh.close()
+        return default
+    
+    def get(self, value, section=None):
+        if section is None:
+            section = self.section
+        return self.parser.get(section, value)
+    
+    def has_option(self, opt, section=None):
+        if section is None:
+            section = self.section
+        return self.parser.has_option(section, opt)
+    
 
 class Mule(object):
     """Works with a MoinMoin attachment page"""
@@ -47,30 +96,24 @@ class Mule(object):
         site specified in the config file.
         
         """
-        from ConfigParser import ConfigParser, NoOptionError
         conf = os.path.expanduser(conf)
-        if not os.path.isfile(conf):
-            raise IOError("Can't open config file %s:" % conf)
-        cp = ConfigParser()
-        cp.read(conf)
-        if len(cp.sections()) == 0:
-            raise ConfigError("Bad config file")
+        conf = MuleConfigParser(conf, section=site)
         if site is None:
-            site = cp.sections()[0]
-            print "[Mule] section not specified, using `%s`" % site
-        elif site not in cp.sections():
-            raise AttributeError("Specified site (%s) is not listed " \
-                                 "in the config file (%s)" % conf)
+            print "[Mule] section not specified, using default section [%s]" \
+                  % conf.section
+        if len(conf.sections()) == 0:
+            raise ConfigError("No sites defined in config file")
+        
         # host,username,password,page = None,None,None,None
         try:
-            domain = cp.get(site, 'domain')
+            domain = conf.get('domain')
         except NoOptionError, e:
-            raise ConfigError('A host is required (at a minimum) to ' \
-                              'instantiate a Mule object')
+            raise ConfigError('No host definition is defined for [%s] section ' \
+                              'in your config file' % conf.section)
         opts = {'username' : None, 'password' : None}
         for var in opts:
-            if cp.has_option(site, var):
-                opts[var] = cp.get(site, var)
+            if conf.has_option(var):
+                opts[var] = conf.get(var)
         return Mule(domain, page=page, verbose=verbose, **opts)
     
     def __init__(self, host, page=None, username=None, password=None, verbose=False):
@@ -103,12 +146,12 @@ class Mule(object):
             self.browser.submit()
         except urllib2.HTTPError, e:
             self.logged_in = False
-            raise LoginError('Illegal Login: %s' % str(e))
-        
+            raise LoginError('Illegal Login: %s\nPerhaps the requested page ' \
+                             'does not yet exist on the wiki:\n  %s' % \
+                             (str(e), self.action_url('login')))
         if verbose:
             print "[Mule] Login successful"
         self.logged_in = True
-        
     
     def attach(self, filepath, page=None, content_type=None, filename=None,
                sanitize=re.compile('[ /]'), verbose=False):
@@ -225,7 +268,6 @@ def _build_parser():
     return parser
 
 def _setup():
-    from ConfigParser import ConfigParser
     parser = _build_parser()
     (options,args) = parser.parse_args()
     if len(args) < 2:
@@ -256,7 +298,7 @@ def _setup():
             parser.error("No domain is defined for mule to connect to")
         else:
             mule = Mule(options.domain, page=page)
-    print "[Mule] Connection established to %s" % mule.host
+    print "[Mule] Connection established to %s/%s" % (mule.host, mule.page)
     
     if not mule.logged_in:
         if options.username is not None:
