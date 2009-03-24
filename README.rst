@@ -132,7 +132,7 @@ This is an example of ``mule`` config file with two different settings::
 
 .. CAUTION::
 
-  You'll realize that the passwords are stored in plain text, which really
+  You'll realize that the **passwords are stored in plain text**, which really
   isn't a great idea. I plan on allowing for the ability to encrypt
   the password in the `mule` config later, but it's not really high on my
   priority list.
@@ -180,20 +180,14 @@ Usage Examples
 ==============
 
 Let's assume that you have a ``~/.mule`` config file as shown in the example above. 
-You can send all the PNGs in the current directory to the `MyWiki/SubPage` page like so::
+You can send all the PNGs in the current directory to the default server's  (``wiki1``)
+``MyWiki/SubPage`` page like so::
 
-  $ mule --filter=.*png --site=wiki1 MyWiki/SubPage
-  
+  $ mule --filter=.*png MyWiki/SubPage
 
 Note that the option passed to the ``--filter`` flag is a regular expression.
 It's not your standard unix style pattern matching (``--filter=*png`` would 
 **not** have worked).
-
-
-If you had only one site defined in your ``~/.mule`` config file, you don't need 
-to pass any ``--site`` flag::
-
-  $ mule --filter=.*png MyWiki/SubPage
 
 If you don't have any ``~/.mule`` config file, you can pass in the values from the
 command line. The command below just sends the ``Picture1.png`` file to the 
@@ -209,7 +203,7 @@ store your password.
 
 To Do
 =====
-
+ - Use python glob_ module to replace pattern matching on ``--filter`` switch.
  - Deal with attachments already existing on the target web page
  - Encrypt the passwords stored in the ``~/.mule`` config file
  - Deal with sending files to a page that doesn't exist
@@ -221,3 +215,4 @@ To Do
 .. _SurgeProtection: http://moinmo.in/HelpOnConfiguration/SurgeProtection
 .. _mechanize: http://wwwsearch.sourceforge.net/mechanize
 .. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
+.. _glob: http://docs.python.org/library/glob.html
