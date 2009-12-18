@@ -313,8 +313,8 @@ def _setup():
     return mule, files, options
 
 def _run(mule, files, options):
-    import re
-    pattern = re.compile(options.filter)
+    import re, fnmatch
+    pattern = re.compile(fnmatch.translate(options.filter))
     for fname in files:
         if os.path.isfile(fname):
             send = [fname]
